@@ -1,0 +1,60 @@
+module alu(A,B,Sel,out);
+input [3:0] A,B;
+input [3:0] Sel;
+output reg [6:0]out;
+
+always@(*)
+begin
+case(Sel)
+4'b0000 : out = A + B;
+4'b0001 : out = A - B;
+4'b0010 : out = A * B;
+4'b0011 : out = A / B;
+4'b0100 : out = A<<1;
+4'b0101 : out = A>>1;
+4'b0110 : out = {A[2:0],A[3]};
+4'b0111 : out = {A[0],A[3:1]};
+4'b1000 : out = A & B;
+4'b1001 : out = A | B;
+4'b1010 : out = A ^ B;
+4'b1011 : out = ~(A & B);
+4'b1100 : out = ~(A | B);
+4'b1101 : out = ~(A ^ B);
+4'b1110 : out = (A>B)?6'd1:6'd0;
+4'b1111 : out = (A==B)?6'd1:6'd0;
+default out = 0;
+endcase
+end
+endmodule
+
+
+//TESTBENCH
+module TB();
+reg[3:0] A,B;
+reg[3:0]Sel;
+wire[6:0]out;
+
+alu a1(A,B,Sel,out);
+
+initial
+begin
+Sel = 4'b0000;  A = 0100;  B = 1111;
+#10;
+
+Sel = 4'b0001;  A = 0100;  B = 1111;
+#10;
+
+Sel = 4'b0010;  A = 0100;  B = 1111;
+#10;
+
+Sel = 4'b0011 ; A = 0100;  B = 1111;
+#10;
+
+Sel = 4'b0100;  A = 0100;  B = 1111;
+#40;
+
+end
+endmodule
+
+ 
+ 
